@@ -14,9 +14,9 @@
     :root {
       --primary-color: #097f69;
       --secondary-color: #05caa7;
+      --highlight-color: #f2a65a;
       --light-bg: #f5f7f6;
       --dark-text: #1a1a1a;
-      --highlight-color: #f2a65a;
     }
 
     /* Navbar */
@@ -50,6 +50,18 @@
       border-color: var(--primary-color);
     }
 
+    .btn-accent {
+      background-color: var(--highlight-color);
+      color: #ffffff;
+      font-weight: 700;
+      border: none;
+    }
+
+    .btn-accent:hover {
+      background-color: #d18f3d; /* Slightly darker orange for hover */
+      color: #ffffff;
+    }
+
     /* Cards */
     .card {
       background-color: var(--light-bg);
@@ -71,6 +83,12 @@
       border-color: var(--primary-color);
     }
 
+    /* Accent for topic card titles */
+    .card-accent-text {
+      color: var(--highlight-color);
+      font-weight: 600;
+    }
+
     /* Footer */
     footer {
       background-color: var(--primary-color);
@@ -84,7 +102,7 @@
     <div class="overlay p-5 rounded">
       <h1 class="display-4">Radionice</h1>
       <p class="lead">Upoznaj Elektrotehničku i ekonomsku školu kroz radionice tehnologije, robotike i kreativne ekonomije</p>
-      <a href="#about" class="btn btn-primary btn-lg mt-3">Saznaj više</a>
+      <a href="#about" class="btn btn-accent btn-lg mt-3">Saznaj više</a>
     </div>
   </header>
 
@@ -112,7 +130,7 @@
           <div class="card h-100 shadow-sm">
             <img src="assets/electronics.jpg" loading="lazy" class="card-img-top" alt="Elektronika">
             <div class="card-body">
-              <h5 class="card-title">Svjetla na dodir – mali inženjeri u akciji</h5>
+              <h5 class="card-title card-accent-text">Svjetla na dodir – mali inženjeri u akciji</h5>
               <p class="card-text">Praktični eksperimenti i osnovni koncepti ⚡</p>
             </div>
           </div>
@@ -121,7 +139,7 @@
           <div class="card h-100 shadow-sm">
             <img src="assets/economics.jpg" loading="lazy" class="card-img-top" alt="Robotika">
             <div class="card-body">
-              <h5 class="card-title">Put do financijske pismenosti</h5>
+              <h5 class="card-title card-accent-text">Put do financijske pismenosti</h5>
               <p class="card-text">Planiranje prihoda i rashoda, štednja, jednostavne investicije</p>
             </div>
           </div>
@@ -133,7 +151,7 @@
           <div class="card h-100 shadow-sm">
             <img src="assets/coding.jpg" class="card-img-top" alt="Programiranje">
             <div class="card-body">
-              <h5 class="card-title">Moć umjetne inteligencije – ti si kreator budućnosti</h5>
+              <h5 class="card-title card-accent-text">Moć umjetne inteligencije – ti si kreator budućnosti</h5>
               <p class="card-text">AI koji prepoznaje slike + prezentacija proizvoda</p>
             </div>
           </div>
@@ -142,7 +160,7 @@
           <div class="card h-100 shadow-sm">
             <img src="assets/creative.jpg" class="card-img-top" alt="Kreativnost">
             <div class="card-body">
-              <h5 class="card-title">Ruka koja sluša tvoje naredbe</h5>
+              <h5 class="card-title card-accent-text">Ruka koja sluša tvoje naredbe</h5>
               <p class="card-text">Upravljanje robotskom rukom</p>
             </div>
           </div>
@@ -156,56 +174,56 @@
         <div class="col">
           <div class="card h-100 text-center p-3 shadow-sm rounded-3 topic-card">
             <div class="card-body d-flex align-items-center justify-content-center">
-              <h5 class="card-title m-0">Mikroupravljači</h5>
+              <h5 class="card-title m-0 card-accent-text">Mikroupravljači</h5>
             </div>
           </div>
         </div>
         <div class="col">
           <div class="card h-100 text-center p-3 shadow-sm rounded-3 topic-card">
             <div class="card-body d-flex align-items-center justify-content-center">
-              <h5 class="card-title m-0">LED signalizacija</h5>
+              <h5 class="card-title m-0 card-accent-text">LED signalizacija</h5>
             </div>
           </div>
         </div>
         <div class="col">
           <div class="card h-100 text-center p-3 shadow-sm rounded-3 topic-card">
             <div class="card-body d-flex align-items-center justify-content-center">
-              <h5 class="card-title m-0">Prepoznavanje slika</h5>
+              <h5 class="card-title m-0 card-accent-text">Prepoznavanje slika</h5>
             </div>
           </div>
         </div>
         <div class="col">
           <div class="card h-100 text-center p-3 shadow-sm rounded-3 topic-card">
             <div class="card-body d-flex align-items-center justify-content-center">
-              <h5 class="card-title m-0">Kreativni marketing</h5>
+              <h5 class="card-title m-0 card-accent-text">Kreativni marketing</h5>
             </div>
           </div>
         </div>
         <div class="col">
           <div class="card h-100 text-center p-3 shadow-sm rounded-3 topic-card">
             <div class="card-body d-flex align-items-center justify-content-center">
-              <h5 class="card-title m-0">Robotika</h5>
+              <h5 class="card-title m-0 card-accent-text">Robotika</h5>
             </div>
           </div>
         </div>
         <div class="col">
           <div class="card h-100 text-center p-3 shadow-sm rounded-3 topic-card">
             <div class="card-body d-flex align-items-center justify-content-center">
-              <h5 class="card-title m-0">Automatizacija</h5>
+              <h5 class="card-title m-0 card-accent-text">Automatizacija</h5>
             </div>
           </div>
         </div>
         <div class="col">
           <div class="card h-100 text-center p-3 shadow-sm rounded-3 topic-card">
             <div class="card-body d-flex align-items-center justify-content-center">
-              <h5 class="card-title m-0">Budžetiranje</h5>
+              <h5 class="card-title m-0 card-accent-text">Budžetiranje</h5>
             </div>
           </div>
         </div>
         <div class="col">
           <div class="card h-100 text-center p-3 shadow-sm rounded-3 topic-card">
             <div class="card-body d-flex align-items-center justify-content-center">
-              <h5 class="card-title m-0">Štednja</h5>
+              <h5 class="card-title m-0 card-accent-text">Štednja</h5>
             </div>
           </div>
         </div>
