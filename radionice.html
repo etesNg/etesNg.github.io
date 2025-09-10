@@ -75,56 +75,53 @@
 
   <script>
     // Data for workshops
-    const workshops = {
-      robotika: {
-        title: "Ruka koja sluša tvoje naredbe",
-        description: "Upravljanje robotskom rukom",
-        image: "assets/creative.jpg",
-        details: "Ova radionica omogućuje učenicima da programiraju i upravljaju robotskom rukom..."
-      },
-      svjetla: {
-        title: "Svjetla na dodir – mali inženjeri u akciji",
-        description: "Praktični eksperimenti i osnovni koncepti ⚡",
-        image: "assets/electronics.jpg",
-        details: "U ovoj radionici učenici će se upoznati s osnovama elektronike i izraditi svjetla na dodir..."
-      },
-      financije: {
-        title: "Put do financijske pismenosti",
-        description: "Planiranje prihoda i rashoda, štednja, jednostavne investicije",
-        image: "assets/economics.jpg",
-        details: "Ova radionica uči učenike osnovama financijske pismenosti, budžetiranju i štednji..."
-      }
-    };
+   // Read workshop ID from URL
+const params = new URLSearchParams(window.location.search);
+const workshopId = params.get('id');
 
-    // Get workshop ID from URL
-    const params = new URLSearchParams(window.location.search);
-    const workshopId = params.get('id');
+// Example workshop data
+const workshops = {
+  robotika: {
+    title: "Ruka koja sluša tvoje naredbe",
+    description: "Upravljanje robotskom rukom",
+    image: "assets/creative.jpg",
+    details: "Ova radionica omogućuje učenicima da programiraju i upravljaju robotskom rukom..."
+  },
+  Elektronika: {
+    title: "Svjetla na dodir – mali inženjeri u akciji",
+    description: "Praktični eksperimenti i osnovni koncepti ⚡",
+    image: "assets/electronics.jpg",
+    details: "U ovoj radionici učenici će se upoznati s osnovama elektronike i izraditi svjetla na dodir..."
+  },
+  ekonomija: {
+    title: "Put do financijske pismenosti",
+    description: "Planiranje prihoda i rashoda, štednja, jednostavne investicije",
+    image: "assets/economics.jpg",
+    details: "Ova radionica uči učenike osnovama financijske pismenosti, budžetiranju i štednji..."
+  },
 
-    if (workshopId && workshops[workshopId]) {
-      const workshop = workshops[workshopId];
+ai: {
+    title: "Put do financijske pismenosti",
+    description: "Planiranje prihoda i rashoda, štednja, jednostavne investicije",
+    image: "assets/economics.jpg",
+    details: "Ova radionica uči učenike osnovama financijske pismenosti, budžetiranju i štednji..."
+  }
+};
 
-      // Set hero image and content
-      const heroImg = document.getElementById('hero-img');
-      heroImg.src = workshop.image;
+if (workshopId && workshops[workshopId]) {
+  const workshop = workshops[workshopId];
+  document.getElementById('hero-img').src = workshop.image;
+  document.getElementById('hero-title').textContent = workshop.title;
+  document.getElementById('hero-description').textContent = workshop.description;
 
-      const heroTitle = document.getElementById('hero-title');
-      const heroDesc = document.getElementById('hero-description');
-      heroTitle.textContent = workshop.title;
-      heroDesc.textContent = workshop.description;
-
-      // Add additional details below
-      const detailsContainer = document.getElementById('workshop-details');
-      const detailsSection = document.createElement('section');
-      detailsSection.innerHTML = `
-        <h2>Detalji radionice</h2>
-        <p>${workshop.details}</p>
-      `;
-      detailsContainer.appendChild(detailsSection);
-    } else {
-      // Fallback if invalid ID
-      document.getElementById('hero-title').textContent = "Radionica nije pronađena";
-      document.getElementById('hero-description').textContent = "";
-    }
+  // Add additional details
+  const detailsContainer = document.getElementById('workshop-details');
+  const section = document.createElement('section');
+  section.innerHTML = `<h2>Detalji radionice</h2><p>${workshop.details}</p>`;
+  detailsContainer.appendChild(section);
+} else {
+  document.getElementById('hero-title').textContent = "Radionica nije pronađena";
+}
   </script>
 
 </body>
