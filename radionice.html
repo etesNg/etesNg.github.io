@@ -126,9 +126,7 @@ ai: {
   }
 };
 
-  heroImg.addEventListener('transitionend', () => {
-  document.getElementById('hero-content').style.opacity = '1';
-});
+  
 
 if (workshopId && workshops[workshopId]) {
   const workshop = workshops[workshopId];
@@ -150,7 +148,7 @@ if (workshopId && workshops[workshopId]) {
   detailsContainer.appendChild(section);
 } else {
   document.getElementById('hero-title').textContent = "Radionica nije pronađena";
-}
+}});
   </script>
 
 </body>
