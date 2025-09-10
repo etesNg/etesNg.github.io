@@ -20,15 +20,32 @@
     body { font-family: 'Roboto', sans-serif; margin:0; }
 
     .hero {
-      position: relative;
-      width: 100%;
-      height: 40vh;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background-color: var(--light-bg);
-    }
+  position: relative;
+  width: 100%;
+  height: 80vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--light-bg);
+}
+
+    .hero-content {
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out 0.3s; /* fade in after morph */
+}
+    
+.transition-image {
+  position: fixed; /* initially fixed, like the cloned image */
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  object-fit: cover;
+  transition: all 0.7s ease-in-out;
+  z-index: 1000;
+  border-radius: 10px;
+}
 
     .hero img {
       width: 100%;
@@ -58,12 +75,12 @@
 <body>
 
   <header class="hero" id="hero">
-    <img src="" alt="Radionica" id="hero-img" />
-    <div class="hero-content" id="hero-content">
-      <h1 id="hero-title"></h1>
-      <p id="hero-description"></p>
-    </div>
-  </header>
+  <img src="" alt="Radionica" id="hero-img" class="transition-image" />
+  <div class="hero-content" id="hero-content">
+    <h1 id="hero-title"></h1>
+    <p id="hero-description"></p>
+  </div>
+</header>
 
   <main id="workshop-details">
     <!-- Additional workshop details will appear here -->
@@ -76,8 +93,9 @@
   <script>
     // Data for workshops
    // Read workshop ID from URL
-const params = new URLSearchParams(window.location.search);
-const workshopId = params.get('id');
+window.addEventListener('DOMContentLoaded', () => {
+  const params = new URLSearchParams(window.location.search);
+  const workshopId = params.get('id');
 
 // Example workshop data
 const workshops = {
@@ -108,8 +126,19 @@ ai: {
   }
 };
 
+  heroImg.addEventListener('transitionend', () => {
+  document.getElementById('hero-content').style.opacity = '1';
+});
+
 if (workshopId && workshops[workshopId]) {
   const workshop = workshops[workshopId];
+  const heroImg = document.getElementById('hero-img');
+    heroImg.src = workshop.image;
+    heroImg.style.width = '100vw';
+    heroImg.style.height = '80vh';
+    heroImg.style.top = '0';
+    heroImg.style.left = '0';
+    heroImg.style.borderRadius = '0';
   document.getElementById('hero-img').src = workshop.image;
   document.getElementById('hero-title').textContent = workshop.title;
   document.getElementById('hero-description').textContent = workshop.description;
