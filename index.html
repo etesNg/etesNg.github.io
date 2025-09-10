@@ -84,7 +84,7 @@
       <div class="row">
         <!-- Workshop Card Example -->
         <div class="col-md-6 mb-4">
-          <div class="card workshop-card h-100 shadow-sm">
+          <div class="card workshop-card h-100 id="Elektronika" shadow-sm">
             <img src="assets/electronics.jpg" loading="lazy" class="card-img-top" alt="Elektronika" />
             <div class="card-body">
               <h5 class="card-title card-accent-text">Svjetla na dodir – mali inženjeri u akciji</h5>
@@ -94,8 +94,8 @@
         </div>
 
         <div class="col-md-6 mb-4">
-          <div class="card workshop-card h-100 shadow-sm">
-            <img src="assets/economics.jpg" loading="lazy" class="card-img-top" alt="Robotika" />
+          <div class="card workshop-card h-100 id="ekonomija" shadow-sm">
+            <img src="assets/economics.jpg" loading="lazy" class="card-img-top" alt="Financije" />
             <div class="card-body">
               <h5 class="card-title card-accent-text">Put do financijske pismenosti</h5>
               <p class="card-text">Planiranje prihoda i rashoda, štednja, jednostavne investicije</p>
@@ -103,7 +103,93 @@
           </div>
         </div>
       </div>
+
+
+      <div class="row">
+        <div class="col-md-6 mb-4">
+          <div class="card workshop-card h-100 shadow-sm id="ai"">
+            <img src="assets/coding.jpg" class="card-img-top" alt="Programiranje">
+            <div class="card-body">
+              <h5 class="card-title card-accent-text">Moć umjetne inteligencije – ti si kreator budućnosti</h5>
+              <p class="card-text">AI koji prepoznaje slike + prezentacija proizvoda</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 mb-4">
+          <div class="card workshop-card h-100 shadow-sm" id="robotika">
+            <img src="assets/creative.jpg" class="card-img-top" alt="Kreativnost">
+            <div class="card-body">
+              <h5 class="card-title card-accent-text">Ruka koja sluša tvoje naredbe</h5>
+              <p class="card-text">Upravljanje robotskom rukom</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </section>
+
+    <section id="topics" class="container my-5">
+      <h2 class="text-center mb-4">Teme radionica</h2>
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+        <div class="col">
+          <div class="card h-100 text-center p-3 shadow-sm rounded-3 topic-card">
+            <div class="card-body d-flex align-items-center justify-content-center">
+              <h5 class="card-title m-0 card-accent-text">Mikroupravljači</h5>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card h-100 text-center p-3 shadow-sm rounded-3 topic-card">
+            <div class="card-body d-flex align-items-center justify-content-center">
+              <h5 class="card-title m-0 card-accent-text">LED signalizacija</h5>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card h-100 text-center p-3 shadow-sm rounded-3 topic-card">
+            <div class="card-body d-flex align-items-center justify-content-center">
+              <h5 class="card-title m-0 card-accent-text">Prepoznavanje slika</h5>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card h-100 text-center p-3 shadow-sm rounded-3 topic-card">
+            <div class="card-body d-flex align-items-center justify-content-center">
+              <h5 class="card-title m-0 card-accent-text">Kreativni marketing</h5>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card h-100 text-center p-3 shadow-sm rounded-3 topic-card">
+            <div class="card-body d-flex align-items-center justify-content-center">
+              <h5 class="card-title m-0 card-accent-text">Robotika</h5>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card h-100 text-center p-3 shadow-sm rounded-3 topic-card">
+            <div class="card-body d-flex align-items-center justify-content-center">
+              <h5 class="card-title m-0 card-accent-text">Automatizacija</h5>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card h-100 text-center p-3 shadow-sm rounded-3 topic-card">
+            <div class="card-body d-flex align-items-center justify-content-center">
+              <h5 class="card-title m-0 card-accent-text">Budžetiranje</h5>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card h-100 text-center p-3 shadow-sm rounded-3 topic-card">
+            <div class="card-body d-flex align-items-center justify-content-center">
+              <h5 class="card-title m-0 card-accent-text">Štednja</h5>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
   </main>
 
   <footer class="text-center p-3">
@@ -115,42 +201,43 @@
   
   <script>
     // Morph animation for workshop cards
-    const cards = document.querySelectorAll('.workshop-card');
+   const cards = document.querySelectorAll('.workshop-card');
 
-    cards.forEach(card => {
-      card.addEventListener('click', () => {
-        const img = card.querySelector('img');
-        const rect = img.getBoundingClientRect();
+cards.forEach(card => {
+  card.addEventListener('click', () => {
+    const img = card.querySelector('img');
+    const rect = img.getBoundingClientRect();
+    const workshopId = card.id; // Use the card ID
 
-        // Clone the image
-        const clone = img.cloneNode(true);
-        document.body.appendChild(clone);
+    // Clone the image
+    const clone = img.cloneNode(true);
+    document.body.appendChild(clone);
 
-        // Set initial position
-        clone.style.top = rect.top + 'px';
-        clone.style.left = rect.left + 'px';
-        clone.style.width = rect.width + 'px';
-        clone.style.height = rect.height + 'px';
-        clone.style.borderRadius = '10px';
-        clone.classList.add('morph-image');
+    // Initial position
+    clone.style.position = 'fixed';
+    clone.style.top = rect.top + 'px';
+    clone.style.left = rect.left + 'px';
+    clone.style.width = rect.width + 'px';
+    clone.style.height = rect.height + 'px';
+    clone.style.borderRadius = '10px';
+    clone.style.zIndex = '1000';
+    clone.classList.add('morph-image');
 
-        // Force repaint
-        clone.getBoundingClientRect();
+    clone.getBoundingClientRect(); // Force repaint
 
-        // Animate to fullscreen hero
-        clone.style.top = '0';
-        clone.style.left = '0';
-        clone.style.width = '100vw';
-        clone.style.height = '100vh';
-        clone.style.borderRadius = '0';
+    // Animate to fullscreen hero
+    clone.style.top = '0';
+    clone.style.left = '0';
+    clone.style.width = '100vw';
+    clone.style.height = '100vh';
+    clone.style.borderRadius = '0';
 
-        // After animation, navigate to new page or reveal content
-        clone.addEventListener('transitionend', () => {
-          // Replace with your actual workshop detail page
-          window.location.href = 'workshop-detail.html';
-        });
-      });
+    clone.addEventListener('transitionend', () => {
+      // Navigate to detail page with workshop ID
+      window.location.href = `radionice?id=${workshopId}`;
     });
+  });
+});
   </script>
 </body>
 </html>
