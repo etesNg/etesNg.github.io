@@ -19,7 +19,7 @@
 
     body { font-family: 'Roboto', sans-serif; margin:0; }
 
-    /* --- Header style (from first design, adapted) --- */
+    /* --- Header --- */
     header.hero {
       position: relative;
       text-align: center;
@@ -30,12 +30,28 @@
       justify-content: center;
       background-size: cover;
       background-position: center;
+      overflow: hidden;
+    }
+
+    /* Morphing transition image */
+    #hero-morph {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 0.7s ease-in-out;
+      z-index: 0;
     }
 
     header.hero .overlay {
       background-color: rgba(9,127,105,0.7);
       padding: 3rem;
       border-radius: 10px;
+      z-index: 1;
+      position: relative;
     }
 
     header.hero h1 {
@@ -79,6 +95,7 @@
 
   <!-- Dynamic Header -->
   <header class="hero" id="hero">
+    <img id="hero-morph" src="" alt="Radionica">
     <div class="overlay">
       <h1 id="hero-title">Radionica</h1>
       <p id="hero-description"></p>
@@ -128,11 +145,22 @@
 
       if (workshopId && workshops[workshopId]) {
         const workshop = workshops[workshopId];
-        const hero = document.getElementById('hero');
-        hero.style.backgroundImage = `url(${workshop.image})`;
-        document.getElementById('hero-title').textContent = workshop.title;
-        document.getElementById('hero-description').textContent = workshop.description;
+        const heroMorph = document.getElementById('hero-morph');
+        const heroTitle = document.getElementById('hero-title');
+        const heroDescription = document.getElementById('hero-description');
 
+        // Morph effect: preload, then fade in
+        const newImg = new Image();
+        newImg.src = workshop.image;
+        newImg.onload = () => {
+          heroMorph.src = workshop.image;
+          heroMorph.style.opacity = 1;
+        };
+
+        heroTitle.textContent = workshop.title;
+        heroDescription.textContent = workshop.description;
+
+        // Add details
         const detailsContainer = document.getElementById('workshop-details');
         const section = document.createElement('section');
         section.innerHTML = `<h2>Detalji radionice</h2><p>${workshop.details}</p>`;
