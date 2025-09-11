@@ -202,6 +202,9 @@
   <script>
     // Morph animation for workshop cards
    const cards = document.querySelectorAll('.workshop-card');
+    window.addEventListener("pageshow", () => {
+  document.querySelectorAll(".clone").forEach(el => el.remove());
+});
 
 cards.forEach(card => {
   card.addEventListener('click', () => {
@@ -211,6 +214,7 @@ cards.forEach(card => {
 
     // Clone the image
     const clone = img.cloneNode(true);
+    clone.classList.add("clone");
     document.body.appendChild(clone);
 
     // Initial position
