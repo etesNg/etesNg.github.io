@@ -230,10 +230,10 @@ cards.forEach(card => {
     clone.getBoundingClientRect(); // Force repaint
 
     // Animate to fullscreen hero
-    clone.style.top = '0';
-    clone.style.left = '0';
-    clone.style.width = '100vw';
-    clone.style.height = '100vh';
+    clone.style.top = rect.top + window.scrollY + "px";   // add scroll offset
+clone.style.left = rect.left + window.scrollX + "px"; // add scroll offset
+clone.style.width = rect.width + "px";
+clone.style.height = rect.height + "px";
     clone.style.borderRadius = '0';
 
     clone.addEventListener('transitionend', () => {
