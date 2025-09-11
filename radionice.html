@@ -19,78 +19,72 @@
 
     body { font-family: 'Roboto', sans-serif; margin:0; }
 
-    .hero {
-  position: fixed;          /* keep it locked at the top */
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 80vh;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: var(--light-bg);
-  z-index: -1;              /* stay behind content */
-}
-
-.hero img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-    .hero-content {
-  opacity: 0;
-  transition: opacity 0.5s ease-in-out 0.3s; /* fade in after morph */
-}
-    
-.transition-image {
-  position: fixed; /* initially fixed, like the cloned image */
-  top: 0;
-  left: 0;
-  width: 0;
-  height: 0;
-  object-fit: cover;
-  transition: all 0.7s ease-in-out;
-  z-index: 1000;
-  border-radius: 10px;
-}
-
-    .hero img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: all 0.7s ease-in-out;
+    /* --- Header style (from first design, adapted) --- */
+    header.hero {
+      position: relative;
+      text-align: center;
+      color: #fff;
+      height: 80vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-size: cover;
+      background-position: center;
     }
 
-    .hero-content {
-      position: absolute;
-      bottom: 30px;
-      left: 30px;
-      color: #fff;
-      background-color: rgba(0,0,0,0.5);
-      padding: 15px 25px;
+    header.hero .overlay {
+      background-color: rgba(9,127,105,0.7);
+      padding: 3rem;
       border-radius: 10px;
     }
 
-    main { padding: 2rem;
-         margin-top: 80vh;}
+    header.hero h1 {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700;
+      font-size: 3rem;
+    }
 
-    h1, h2 { color: var(--primary-color); }
+    header.hero p {
+      font-size: 1.25rem;
+    }
+
+    .btn-accent {
+      background-color: var(--highlight-color);
+      color: #fff;
+      font-weight: 700;
+      border: none;
+    }
+    .btn-accent:hover {
+      background-color: #d18f3d;
+      color: #fff;
+    }
+
+    main {
+      padding: 2rem;
+      margin-top: 2rem;
+    }
+
+    h2 { color: var(--primary-color); }
     p { color: var(--dark-text); }
 
-    footer { background-color: var(--primary-color); color: #fff; text-align: center; padding: 1rem; }
+    footer {
+      background-color: var(--primary-color);
+      color: #fff;
+      text-align: center;
+      padding: 1rem;
+    }
   </style>
 </head>
 <body>
 
+  <!-- Dynamic Header -->
   <header class="hero" id="hero">
-  <img src="" alt="Radionica" id="hero-img" class="transition-image" />
-  <div class="hero-content" id="hero-content">
-    <h1 id="hero-title"></h1>
-    <p id="hero-description"></p>
-  </div>
-</header>
+    <div class="overlay">
+      <h1 id="hero-title">Radionica</h1>
+      <p id="hero-description"></p>
+      <a href="#workshop-details" class="btn btn-accent btn-lg mt-3">Saznaj više</a>
+    </div>
+  </header>
 
   <main id="workshop-details">
     <!-- Additional workshop details will appear here -->
@@ -101,64 +95,52 @@
   </footer>
 
   <script>
-    // Data for workshops
-   // Read workshop ID from URL
-window.addEventListener('DOMContentLoaded', () => {
-  const params = new URLSearchParams(window.location.search);
-  const workshopId = params.get('id');
+    window.addEventListener('DOMContentLoaded', () => {
+      const params = new URLSearchParams(window.location.search);
+      const workshopId = params.get('id');
 
-// Example workshop data
-const workshops = {
-  robotika: {
-    title: "Ruka koja sluša tvoje naredbe",
-    description: "Upravljanje robotskom rukom",
-    image: "assets/creative.jpg",
-    details: "Ova radionica omogućuje učenicima da programiraju i upravljaju robotskom rukom..."
-  },
-  Elektronika: {
-    title: "Svjetla na dodir – mali inženjeri u akciji",
-    description: "Praktični eksperimenti i osnovni koncepti ⚡",
-    image: "assets/electronics.jpg",
-    details: "U ovoj radionici učenici će se upoznati s osnovama elektronike i izraditi svjetla na dodir..."
-  },
-  ekonomija: {
-    title: "Put do financijske pismenosti",
-    description: "Planiranje prihoda i rashoda, štednja, jednostavne investicije",
-    image: "assets/economics.jpg",
-    details: "Ova radionica uči učenike osnovama financijske pismenosti, budžetiranju i štednji..."
-  },
+      const workshops = {
+        robotika: {
+          title: "Ruka koja sluša tvoje naredbe",
+          description: "Upravljanje robotskom rukom",
+          image: "assets/creative.jpg",
+          details: "Ova radionica omogućuje učenicima da programiraju i upravljaju robotskom rukom..."
+        },
+        Elektronika: {
+          title: "Svjetla na dodir – mali inženjeri u akciji",
+          description: "Praktični eksperimenti i osnovni koncepti ⚡",
+          image: "assets/electronics.jpg",
+          details: "U ovoj radionici učenici će se upoznati s osnovama elektronike i izraditi svjetla na dodir..."
+        },
+        ekonomija: {
+          title: "Put do financijske pismenosti",
+          description: "Planiranje prihoda i rashoda, štednja, jednostavne investicije",
+          image: "assets/economics.jpg",
+          details: "Ova radionica uči učenike osnovama financijske pismenosti, budžetiranju i štednji..."
+        },
+        ai: {
+          title: "AI nes",
+          description: "nes vezano za AI",
+          image: "assets/coding.jpg",
+          details: "aiiiii..."
+        }
+      };
 
-ai: {
-    title: "AI nes",
-    description: "nes vezano za aie",
-    image: "assets/coding.jpg",
-    details: "aiiiii..."
-  }
-};
+      if (workshopId && workshops[workshopId]) {
+        const workshop = workshops[workshopId];
+        const hero = document.getElementById('hero');
+        hero.style.backgroundImage = `url(${workshop.image})`;
+        document.getElementById('hero-title').textContent = workshop.title;
+        document.getElementById('hero-description').textContent = workshop.description;
 
-  
-
-if (workshopId && workshops[workshopId]) {
-  const workshop = workshops[workshopId];
-  const heroImg = document.getElementById('hero-img');
-    heroImg.src = workshop.image;
-    heroImg.style.width = '100vw';
-    heroImg.style.height = '80vh';
-    heroImg.style.top = '0';
-    heroImg.style.left = '0';
-    heroImg.style.borderRadius = '0';
-  document.getElementById('hero-img').src = workshop.image;
-  document.getElementById('hero-title').textContent = workshop.title;
-  document.getElementById('hero-description').textContent = workshop.description;
-
-  // Add additional details
-  const detailsContainer = document.getElementById('workshop-details');
-  const section = document.createElement('section');
-  section.innerHTML = `<h2>Detalji radionice</h2><p>${workshop.details}</p>`;
-  detailsContainer.appendChild(section);
-} else {
-  document.getElementById('hero-title').textContent = "Radionica nije pronađena";
-}});
+        const detailsContainer = document.getElementById('workshop-details');
+        const section = document.createElement('section');
+        section.innerHTML = `<h2>Detalji radionice</h2><p>${workshop.details}</p>`;
+        detailsContainer.appendChild(section);
+      } else {
+        document.getElementById('hero-title').textContent = "Radionica nije pronađena";
+      }
+    });
   </script>
 
 </body>
