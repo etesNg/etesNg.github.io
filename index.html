@@ -234,7 +234,10 @@ cards.forEach(card => {
 
     clone.addEventListener('transitionend', () => {
       // Navigate to detail page with workshop ID
+      setTimeout(() => {
       window.location.href = `radionice?id=${workshopId}`;
+        clone.remove(); // cleanup
+  }, 100); 
     });
   });
 });
