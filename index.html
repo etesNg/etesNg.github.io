@@ -219,8 +219,8 @@ cards.forEach(card => {
 
     // Initial position
     clone.style.position = 'fixed';
-    clone.style.top = rect.top + "px";   // add scroll offset
-clone.style.left = rect.left +  "px";
+    clone.style.top = rect.top + window.scrollY +"px";   // add scroll offset
+clone.style.left = rect.left + window.scrollX + "px";
     clone.style.width = rect.width + 'px';
     clone.style.height = rect.height + 'px';
     clone.style.borderRadius = '10px';
