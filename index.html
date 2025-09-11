@@ -219,8 +219,8 @@ cards.forEach(card => {
 
     // Initial position
     clone.style.position = 'fixed';
-    clone.style.top = rect.top + window.scrollY + "px";   // add scroll offset
-clone.style.left = rect.left + window.scrollX + "px";
+    clone.style.top = rect.top + "px";   // add scroll offset
+clone.style.left = rect.left +  "px";
     clone.style.width = rect.width + 'px';
     clone.style.height = rect.height + 'px';
     clone.style.borderRadius = '10px';
@@ -232,8 +232,8 @@ clone.style.left = rect.left + window.scrollX + "px";
     // Animate to fullscreen hero
     clone.style.top = 0;   // add scroll offset
 clone.style.left = 0; // add scroll offset
-clone.style.width = rect.width + "px";
-clone.style.height = rect.height + "px";
+clone.style.width = 100%;
+clone.style.height = 80vh;
     clone.style.borderRadius = '0';
 clone.style.transform = "translateZ(0)";
     clone.addEventListener('transitionend', () => {
