@@ -19,6 +19,121 @@
 
     body { font-family: 'Roboto', sans-serif; margin:0; }
 
+    #hero {
+  position: relative;
+  height: 50vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #fff;
+  background-color: #097f69;
+  background-size: cover;
+  background-position: center;
+  border-radius: 10px;
+  margin-bottom: 2rem;
+}
+
+#hero img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+  opacity: 0.6;
+  z-index: -1;
+}
+
+#hero h1 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  font-size: 2.5rem;
+}
+
+#hero p {
+  font-size: 1.25rem;
+  margin-top: 0.5rem;
+}
+
+/* --- Icons Section --- */
+#icons {
+  margin: 2rem 0;
+}
+
+#icons div {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+}
+
+/* --- Details --- */
+#details h2 {
+  font-family: 'Poppins', sans-serif;
+  color: #097f69;
+  margin-bottom: 1rem;
+}
+
+#details p, #details ul {
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+/* --- Timeline --- */
+#timeline h2 {
+  font-family: 'Poppins', sans-serif;
+  color: #05caa7;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+#timeline ol {
+  padding-left: 1.5rem;
+}
+
+#timeline li {
+  margin-bottom: 0.75rem;
+}
+
+/* --- Materials --- */
+#materials h2 {
+  font-family: 'Poppins', sans-serif;
+  color: #f2a65a;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+#materials .row img {
+  max-height: 150px;
+  object-fit: cover;
+  border-radius: 8px;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+#materials .row img:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+/* --- Quiz --- */
+#quiz {
+  background-color: #f5f7f6;
+  padding: 1.5rem;
+  border-radius: 10px;
+  margin-top: 2rem;
+}
+
+#quiz h2 {
+  font-family: 'Poppins', sans-serif;
+  color: #097f69;
+  margin-bottom: 1rem;
+}
+
+#quiz p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
     /* --- Header --- */
     header.hero {
       position: relative;
