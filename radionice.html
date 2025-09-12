@@ -214,15 +214,35 @@
           title: "Ruka koja sluša tvoje naredbe",
           description: "Upravljanje robotskom rukom",
           image: "assets/creative.jpg",
-          details: "Na radionici ćeš isprobati kako je to biti <b>inženjer robotike</b> i upravljati robotskom rukom.<br><br>" +
-         "Što ćemo raditi?<ul>" +
-         "<li>Upoznati se s osnovama robotike i senzorike.</li>" +
-         "<li>Naučiti kako se prenosi pokret s čovjeka na stroj.</li>" +
-         "<li>Isprobati upravljanje robotskom rukom pomoću tipkala ili senzora.</li>" +
-         "<li>Razumjeti ulogu programiranja u upravljanju robotima.</li>" +
-         "<li>Razgovarati o primjeni robotskih ruku u medicini, industriji i svakodnevnom životu.</li>" +
-         "</ul>"
-        },
+          details: `
+      <p>Na radionici ćeš zakoračiti u svijet <b>programiranja i robotike</b> – praktično upravljanje robotskom rukom i uvodi u mehatroničke sustave.</p>
+      <ul>
+        <li>Uvod u robotske ruke i gdje ih nalazimo (tvornice automobila, medicinska robotika, 3D printeri).</li>
+        <li>Jednostavan program za pomicanje robotske ruke (podizanje i spuštanje).</li>
+        <li>Dodavanje uvjeta (ako → onda), npr. "ako senzor prepozna predmet → ruka ga pomiče".</li>
+        <li>Timski izazov: prenesi kutijicu s točke A na točku B.</li>
+        <li>Prezentacija rješenja i razgovor: "U kojim zanimanjima bi ovakva ruka bila najkorisnija?"</li>
+      </ul>
+    `,
+    icons: [
+      "⏱️ 90 minuta",
+      "🎯 Naučit ćeš upravljati robotskom rukom",
+      "🛠️ Mikroupravljači i senzori",
+      "👩‍💻 Programiranje, logičko razmišljanje i timski rad"
+    ],
+    timeline: [
+      "Uvod: što su robotske ruke i gdje ih koristimo",
+      "Praktični rad: programiranje pomaka ruke i uvjeta",
+      "Timski izazov: prijenos predmeta",
+      "Završetak: prezentacija i diskusija"
+    ],
+    materials: [
+      { img: "assets/robot-arm.jpg", alt: "Robotska ruka" },
+      { img: "assets/microcontroller.jpg", alt: "Mikroupravljač" },
+      { img: "assets/sensor.jpg", alt: "Senzor" }
+    ],
+    quiz: "Kako bi ti primijenio ovu robotsku ruku u stvarnom životu ili industriji?"
+  },
         Elektronika: {
           title: "Svjetla na dodir – mali inženjeri u akciji",
     description: "Osvijetli put budućnosti – napravi svoj prvi pametni semafor!",
@@ -257,33 +277,72 @@
     quiz: "Kako bi ti primijenio ovakav pametni semafor u svom gradu?"
   },
         ekonomija: {
-          title: "Put do financijske pismenosti",
-          description: "Planiranje prihoda i rashoda, štednja, jednostavne investicije",
-          image: "assets/economics.jpg",
-          details: "U radionici ćeš zakoračiti u svijet <b>financijske pismenosti</b> i naučiti kako pametno upravljati novcem.<br><br>" +
-         "Što ćemo raditi?<ul>" +
-         "<li>Razumjeti osnovne pojmove prihoda i rashoda.</li>" +
-         "<li>Kroz praktične primjere napraviti vlastiti mali budžet.</li>" +
-         "<li>Razgovarati o važnosti štednje i sigurnom čuvanju novca.</li>" +
-         "<li>Istražiti jednostavne načine ulaganja (primjeri za djecu i mlade).</li>" +
-         "<li>Raditi u grupama na izradi plana „Kako pametno potrošiti i uštedjeti džeparac“.</li>" +
-         "</ul>"
-        },
-        ai: {
-          title: "Moć umjetne inteligencije – ti si kreator budućnosti",
-          description: "AI koji prepoznaje slike i prezentacija proizvoda",
-          image: "assets/coding.jpg",
-          details: "Na radionici ćeš istražiti <b>umjetnu inteligenciju i kreativni marketing</b> – tehnologiju koja oblikuje budućnost i ideje koje je prate.<br><br>" +
-         "Što ćemo raditi?<ul>" +
-         "<li>Upoznati se s pojmom umjetne inteligencije kroz primjere iz svakodnevnog života (TikTok filteri, Google Translate, YouTube preporuke).</li>" +
-         "<li>Razumjeti razliku između tradicionalnog programiranja i AI pristupa.</li>" +
-         "<li>Isprobati online alat <b>Teachable Machine</b> za treniranje AI modela (npr. prepoznavanje mačke i psa ili gesta rukama).</li>" +
-         "<li>Testirati model uživo pomoću kamere.</li>" +
-         "<li>U grupama osmisliti mini marketing kampanju – kako predstaviti AI kao proizvod.</li>" +
-         "<li>Izraditi plakat u <b>Canvi</b> s vizualom i sloganom (npr. „Pametni AI koji prepoznaje ljubimce – savršen za vlasnike mačaka i pasa“).</li>" +
-         "<li>Predstaviti ideje i glasati za najzanimljiviji projekt.</li>" +
-         "</ul>"
-        }
+    title: "Put do financijske pismenosti",
+    description: "Osnove financijske pismenosti, budžetiranja i štednje kroz praktične zadatke.",
+    image: "assets/economics.jpg",
+    details: `
+      <p>Na radionici ćeš zakoračiti u svijet <b>financija i ekonomije</b> – naučiti planirati prihode i rashode te razumjeti važnost štednje i jednostavnih investicija.</p>
+      <ul>
+        <li>Uvod u osnovne financijske pojmove: prihod, rashod, štednja.</li>
+        <li>Izrada osobnog ili grupnog budžeta.</li>
+        <li>Razumijevanje jednostavnih investicija i njihove koristi.</li>
+        <li>Praktični zadaci i mini izazovi u grupi.</li>
+        <li>Diskusija: kako primijeniti naučeno u svakodnevnom životu.</li>
+      </ul>
+    `,
+    icons: [
+      "⏱️ 75 minuta",
+      "🎯 Naučit ćeš planirati budžet i štednju",
+      "💰 Osnove jednostavnih investicija",
+      "👩‍💻 Analiza i timski rad"
+    ],
+    timeline: [
+      "Uvod: osnovni financijski pojmovi",
+      "Praktični zadaci: planiranje prihoda i rashoda",
+      "Mini investicijski izazov",
+      "Završetak: prezentacija i rasprava"
+    ],
+    materials: [
+      { img: "assets/budget.jpg", alt: "Budžetiranje" },
+      { img: "assets/saving.jpg", alt: "Štednja" },
+      { img: "assets/invest.jpg", alt: "Investicije" }
+    ],
+    quiz: "Kako bi ti primijenio osnovne principe financijske pismenosti u svom životu?"
+  },
+
+  ai: {
+    title: "Moć umjetne inteligencije – ti si kreator budućnosti",
+    description: "Učenje osnovnih AI alata, prepoznavanje slika i kreiranje mini marketing kampanje.",
+    image: "assets/coding.jpg",
+    details: `
+      <p>Na radionici ćeš zakoračiti u svijet <b>umjetne inteligencije i kreativnog marketinga</b> – isprobavanje AI alata i izrada mini kampanje za proizvod.</p>
+      <ul>
+        <li>Uvod: što je umjetna inteligencija i primjeri iz svakodnevnog života (TikTok filteri, Google Translate, YouTube preporuke).</li>
+        <li>Praktični dio 1: treniranje AI modela za prepoznavanje npr. mačke i psa ili ruku gore / dolje.</li>
+        <li>Praktični dio 2: grupni rad – osmišljavanje mini marketing kampanje za AI proizvod.</li>
+        <li>Izrada mini plakata u Canva (slika + slogan).</li>
+        <li>Završetak: prezentacija AI modela i plakata, glasanje za najbolju ideju.</li>
+      </ul>
+    `,
+    icons: [
+      "⏱️ 75 minuta",
+      "🎯 Razumijevanje AI i osnovnih alata",
+      "🛠️ Teachable Machine, Canva, računalni alati",
+      "👩‍💻 Kreativnost, logika i timski rad"
+    ],
+    timeline: [
+      "Uvod: što je umjetna inteligencija i primjeri",
+      "Praktični dio 1: treniranje AI modela",
+      "Praktični dio 2: izrada mini marketing kampanje",
+      "Završetak: prezentacija i glasanje"
+    ],
+    materials: [
+      { img: "assets/computer.jpg", alt: "Računalo s kamerom" },
+      { img: "assets/teachable-machine.jpg", alt: "Teachable Machine" },
+      { img: "assets/canva.jpg", alt: "Canva" }
+    ],
+    quiz: "Kako bi ti iskoristio AI za kreiranje vlastite mini kampanje?"
+  }
       };
 
       if (workshopId && workshops[workshopId]) {
