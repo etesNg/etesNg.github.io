@@ -103,8 +103,22 @@
     </div>
   </header>
 
+<section id="hero"></section>
+<section id="icons"></section>
+<section id="details"></section>
+<section id="timeline"></section>
+<section id="materials"></section>
+<section id="quiz"></section>
+  
   <main id="workshop-details">
-    <!-- Additional workshop details will appear here -->
+    
+   <section id="hero"></section>
+  <section id="icons"></section>
+  <section id="details"></section>
+  <section id="timeline"></section>
+  <section id="materials"></section>
+  <section id="quiz"></section>
+    
   </main>
 
   <footer>
@@ -132,16 +146,36 @@
         },
         Elektronika: {
           title: "Svjetla na dodir – mali inženjeri u akciji",
-          description: "Praktični eksperimenti i osnovni koncepti ⚡",
-          image: "assets/electronics.jpg",
-           details: "Na radionici ćeš zakoračiti u svijet <b>elektrotehnike i mikroupravljača</b> – malih “mozgova” koji upravljaju uređajima svuda oko nas.<br><br>" +
-         "Što ćemo raditi?<ul>" +
-         "<li>Upoznati se s osnovama mikroupravljača (Arduino ili Micro:bit).</li>" +
-         "<li>Spojiti crvenu, žutu i zelenu LED i naučiti ih paliti redom.</li>" +
-         "<li>Programirati pauze (delay).</li>" +
-         "<li>Dodati tipkalo koje pokreće sustav.</li>" +
-         "<li>Razgovarati o primjeni u pametnim gradovima.</li>" +
-         "</ul>"
+    description: "Osvijetli put budućnosti – napravi svoj prvi pametni semafor!",
+    image: "assets/semafor.jpg",
+    hero: {
+      slogan: "Osvijetli put budućnosti – napravi svoj prvi pametni semafor!"
+    },
+    icons: [
+      "⏱️ Trajanje: 80 minuta",
+      "🎯 Ishodi: upravljanje mikroupravljačima i LED-icama",
+      "🛠️ Materijali: Arduino/Micro:bit, LED, otpornici, tipkalo",
+      "👩‍💻 Vještine: programiranje, elektronika, timski rad"
+    ],
+    details: "Na radionici ćeš zakoračiti u svijet <b>elektrotehnike i mikroupravljača</b> – malih mozgova koji upravljaju uređajima svuda oko nas.<br><br>" +
+             "Što ćemo raditi?<ul>" +
+             "<li>Upoznati se s osnovama mikroupravljača (Arduino ili Micro:bit).</li>" +
+             "<li>Spojiti crvenu, žutu i zelenu LED i naučiti ih paliti redom.</li>" +
+             "<li>Programirati pauze (delay).</li>" +
+             "<li>Dodati tipkalo koje pokreće sustav.</li>" +
+             "<li>Razgovarati o primjeni u pametnim gradovima.</li>" +
+             "</ul>",
+    timeline: [
+      "Uvod: što su mikroupravljači i gdje ih nalazimo",
+      "Praktični dio: spajanje LED i pisanje koda",
+      "Završetak: prezentacija i rasprava o pametnim gradovima"
+    ],
+    materials: [
+      { img: "assets/arduino.jpg", alt: "Arduino UNO" },
+      { img: "assets/led.jpg", alt: "LED diode" },
+      { img: "assets/button.jpg", alt: "Tipkalo" }
+    ],
+    quiz: "Kako bi ti primijenio ovakav pametni semafor u svom gradu?"
   },
         ekonomija: {
           title: "Put do financijske pismenosti",
@@ -190,15 +224,54 @@
         heroTitle.textContent = workshop.title;
         heroDescription.textContent = workshop.description;
 
+        
+
         // Add details
         const detailsContainer = document.getElementById('workshop-details');
-        const section = document.createElement('section');
-        section.innerHTML = `<h2>Detalji radionice</h2>${workshop.details}`;
-        detailsContainer.appendChild(section);
+detailsContainer.innerHTML = `
+  <section id="icons">
+    <div class="row text-center my-4">
+      ${workshop.icons.map(icon => `<div class="col-md-3">${icon}</div>`).join("")}
+    </div>
+  </section>
+
+  <section id="details">
+    <h2>Detalji radionice</h2>
+    ${workshop.details}
+  </section>
+
+  <section id="timeline">
+    <h2>Kako izgleda radionica?</h2>
+    <ol>
+      ${workshop.timeline.map(step => `<li>${step}</li>`).join("")}
+    </ol>
+  </section>
+
+  <section id="materials">
+    <h2>Materijali koje koristimo</h2>
+    <div class="row">
+      ${workshop.materials.map(m => `
+        <div class="col-md-4 mb-3">
+          <img src="${m.img}" alt="${m.alt}" class="img-fluid rounded shadow-sm">
+        </div>
+      `).join("")}
+    </div>
+  </section>
+
+  <section id="quiz" class="my-4">
+    <h2>Pitanje za tebe</h2>
+    <p>${workshop.quiz}</p>
+  </section>
+`;
       } else {
         document.getElementById('hero-title').textContent = "Radionica nije pronađena";
       }
     });
+
+    
+
+
+    
   </script>
 
 </body>
