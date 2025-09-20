@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Generiraj SVG QR s logom</title>
+  <style>
+    body { font-family: system-ui, Arial; max-width:960px; margin:30px auto; padding:0 20px; }
+    .preview { display:flex; gap:20px; align-items:flex-start; }
+    .box { background:#fff; padding:16px; border-radius:10px; box-shadow:0 6px 18px rgba(0,0,0,.06); }
+    svg { display:block; max-width:100%; height:auto; }
+    button { background:#097f69; color:#fff; border:0; padding:10px 14px; border-radius:8px; cursor:pointer; }
+    input, select { padding:8px; width:100%; margin:6px 0 12px 0; box-sizing:border-box; }
+    label { font-weight:600; font-size:0.95rem; }
+  </style>
+</head>
+<body>
+  <h1>Generiraj SVG QR kod s logom u sredini</h1>
+  <p>Unesi URL i logo (URL ili lokalni path), stisni <em>Generiraj</em>. Logo će biti embedan u SVG (base64).</p>
+
+  <div style="display:grid;grid-template-columns:1fr 260px;gap:20px;">
+    <div class="box">
+      <label>URL za QR</label>
+      <input id="inputUrl" type="url" value="https://etesng.github.io/interest" />
+
+      <label>Logo (URL ili lokalna putanja, npr. assets/logo.png)</label>
+      <input id="inputLogo" type="text" value="assets/Logo.png" />
+
+      <label>Veličina QR (px)</label>
+      <input id="inputSize" type="number" value="400" min="128" max="2000" />
+
+      <label>Omjer loga (npr. 0.20 = 20% širine QR)</label>
+      <input id="inputLogoRatio" type="number" step="0.05" value="0.20" min="0.08" max="0.35" />
+
+      <label>Tip ispravke greške</label>
+      <select id="inputECL">
+        <option value="H" selected>H (najveća, dopušta veći logo)</option>
+        <option value="Q">Q</option>
+        <option value="M">M</option>
+        <option value="L">L</option>
+      </select>
+
+      <div style="margin-top:12px; display:flex; gap:8px;">
+        <button id="btnGenerate">Generiraj</button>
+        <button id="btnDownload" disabled>Preuzmi SVG</button>
+      </div>
+
+      <p style="margin-top:12px;font-size:0.95rem;color:#444;">
+        Napomena: logo ne bi trebao prekrivati više od ~25% površine QR-a. Ako je logo prevelik, skeneri mogu imati problema.
+      </p>
+    </div>
+
+    <div>
+      <div class="box" id="previewBox">
+        <strong>Preview</strong>
+        <div id="svgContainer" style="margin-top:12px; display:flex; align-items:center; justify-content:center;">
+          <!-- SVG će se umetnuti ovdje -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- QR library -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+
+  <script>
+  async function fetchImageAsDataURL(url) {
+    // Pokusaj fetch i konverziju u base64 data URL
+    try {
+      const res = await fetch(url, {cache: "no-store"});
+      if (!res.ok) throw new Error('Fetch nije uspio: ' + res.status);
+      const blob = await res.blob();
+      return await new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
+      });
+    } catch (err) {
+      console.warn("Nije moguće fetchati logo kao base64:", err);
+      // fallback: vrati original URL (može raditi ali ovisi o CORS-u i čitaču)
+      return url;
+    }
+  }
+
+  document.getElementById('btnGenerate').addEventListener('click', async () => {
+    const url = document.getElementById('inputUrl').value.trim();
+    const logoUrl = document.getElementById('inputLogo').value.trim();
+    const size = parseInt(document.getElementById('inputSize').value, 10) || 400;
+    const logoRatio = parseFloat(document.getElementById('inputLogoRatio').value) || 0.2;
+    const ecl = document.getElementById('inputECL').value || 'H';
+
+    if (!url) return alert('Unesi URL.');
+
+    // 1) Generiraj SVG QR (biblioteka vraća string SVG)
+    const svgString = await new Promise((resolve, reject) => {
+      QRCode.toString(url, { type: 'svg', width: size, errorCorrectionLevel: ecl }, (err, svg) => {
+        if (err) reject(err);
+        else resolve(svg);
+      });
+    });
+
+    // 2) Ako imamo logo, fetchaj ga i pretvori u dataURL (bolje za embed)
+    let logoData = null;
+    if (logoUrl) {
+      logoData = await fetchImageAsDataURL(logoUrl);
+    }
+
+    // 3) Umetni <image> u SVG string točno prije zatvaranja <svg> taga (na dnu, ali iznad </svg>)
+    // Parsiraj width/height/viewBox ako postoji
+    // Pretpostavljamo da SVG ima viewBox npr. "0 0 256 256" ili će širina biti size
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(svgString, "image/svg+xml");
+    const svgEl = doc.querySelector('svg');
+
+    // Ako SVG nema viewBox, postavi ga tako da koristimo pixel dimenziju
+    let vb = svgEl.getAttribute('viewBox');
+    let vbW = size, vbH = size;
+    if (vb) {
+      const parts = vb.split(/\s+/).map(Number);
+      if (parts.length === 4) {
+        vbW = parts[2];
+        vbH = parts[3];
+      }
+    } else {
+      svgEl.setAttribute('viewBox', `0 0 ${size} ${size}`);
+      vbW = size; vbH = size;
+    }
+
+    // Odredi dimenzije loga (otprilike logoRatio * širina)
+    const logoSize = Math.round(vbW * logoRatio);
+    const logoX = Math.round((vbW - logoSize) / 2);
+    const logoY = Math.round((vbH - logoSize) / 2);
+
+    if (logoData) {
+      // kreiraj image element i ubaci
+      const imageEl = doc.createElementNS("http://www.w3.org/2000/svg", "image");
+      imageEl.setAttributeNS(null, 'x', logoX);
+      imageEl.setAttributeNS(null, 'y', logoY);
+      imageEl.setAttributeNS(null, 'width', logoSize);
+      imageEl.setAttributeNS(null, 'height', logoSize);
+      imageEl.setAttributeNS(null, 'preserveAspectRatio', 'xMidYMid meet');
+
+      // ako je logoData base64/dataURL, koristimo ga, inače koristimo original URL (CORS može blokirati)
+      imageEl.setAttributeNS('http://www.w3.org/1999/xlink', 'href', logoData);
+      // neki preglednici traže href bez namespace
+      imageEl.setAttribute('href', logoData);
+
+      // opcionalno: stavimo bijeli krug ispod loga radi kontrasta
+      const circle = doc.createElementNS("http://www.w3.org/2000/svg", "rect");
+      // opcionalno: zaokruženi okvir (možeš koristiti <circle> ili <rect rx>)
+      circle.setAttribute('x', logoX - 6);
+      circle.setAttribute('y', logoY - 6);
+      circle.setAttribute('width', logoSize + 12);
+      circle.setAttribute('height', logoSize + 12);
+      circle.setAttribute('rx', Math.round(logoSize * 0.15)); // zaobljeni kutovi
+      circle.setAttribute('fill', '#ffffff'); // bijela pozadina za bolji kontrast
+      circle.setAttribute('opacity', '1');
+
+      // ubaci prvo bijeli okvir pa logo (posebno radi čitača)
+      svgEl.appendChild(circle);
+      svgEl.appendChild(imageEl);
+    }
+
+    // 4) Serializiraj natrag u string i prikaži
+    const serializer = new XMLSerializer();
+    const finalSVG = serializer.serializeToString(svgEl);
+
+    // Postavi u DOM
+    const container = document.getElementById('svgContainer');
+    container.innerHTML = finalSVG;
+
+    // Omogući preuzimanje: kreiraj blob i link
+    const svgBlob = new Blob([finalSVG], {type: 'image/svg+xml;charset=utf-8'});
+    const urlBlob = URL.createObjectURL(svgBlob);
+    const downloadBtn = document.getElementById('btnDownload');
+    downloadBtn.disabled = false;
+    downloadBtn.onclick = () => {
+      const a = document.createElement('a');
+      a.href = urlBlob;
+      a.download = 'qr-with-logo.svg';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    };
+  });
+  </script>
+</body>
+</html>
