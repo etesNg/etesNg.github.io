@@ -2,31 +2,72 @@
 <html lang="hr">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Iskaz interesa</title>
-  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <main class="interest-form">
-    <h1>Iskaži interes za radionicu</h1>
-    <form id="interestForm">
-      <label for="workshop">Odaberi radionicu:</label>
-      <select id="workshop" name="workshop" required>
-        <option value="">-- Odaberi --</option>
-        <option value="elektronika">⚡ Elektronika</option>
-        <option value="robotika">🤖 Robotika</option>
-        <option value="ekonomija">💰 Ekonomija</option>
-        <option value="ai">🤯 AI i marketing</option>
-      </select>
+  <h1>Iskaži interes za radionicu</h1>
 
-      <label for="email">Tvoj e-mail:</label>
-      <input type="email" id="email" name="email" required placeholder="ime@skola.hr">
+  <form id="interestForm">
+    <label for="email">Tvoj e-mail:</label><br>
+    <input type="email" id="email" required><br><br>
 
-      <button type="submit">Pošalji interes</button>
-    </form>
+    <label for="workshop">Odaberi radionicu:</label><br>
+    <select id="workshop" required>
+      <option value="">-- Odaberi --</option>
+      <option value="elektronika">Svjetla na dodir</option>
+      <option value="ekonomija">Put do financijske pismenosti</option>
+      <option value="ai">Moć umjetne inteligencije</option>
+      <option value="robotika">Ruka koja sluša tvoje naredbe</option>
+    </select><br><br>
 
-    <p id="message"></p>
-  </main>
+    <button type="submit">Pošalji</button>
+  </form>
 
-  <script src="interest.js"></script>
+  <p id="message"></p>
+
+  <!-- Firebase SDK -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-app.js";
+    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-firestore.js";
+
+    // 🔑 Ovdje zalijepi svoj Firebase config!
+    const firebaseConfig = {
+      apiKey: "AIzaSyB_xmoQZ3JCEtku1PUphlJYa6kshwSjSdo",
+    authDomain: "radionice-dff45.firebaseapp.com",
+    projectId: "radionice-dff45",
+    storageBucket: "radionice-dff45.firebasestorage.app",
+    messagingSenderId: "1085580505175",
+    appId: "1:1085580505175:web:697d9e635eb669b07a7312",
+    measurementId: "G-ME77NDV08L"
+    };
+
+    // Init Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // Form submit handler
+    document.getElementById("interestForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      
+      const email = document.getElementById("email").value.trim();
+      const workshop = document.getElementById("workshop").value;
+      const message = document.getElementById("message");
+
+      try {
+        await addDoc(collection(db, "interesi"), {
+          email,
+          workshop,
+          timestamp: new Date()
+        });
+        message.textContent = "✅ Uspješno poslano!";
+        message.style.color = "green";
+      } catch (err) {
+        console.error("Greška:", err);
+        message.textContent = "❌ Došlo je do greške pri slanju.";
+        message.style.color = "red";
+      }
+    });
+  </script>
 </body>
 </html>
