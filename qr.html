@@ -1,74 +1,46 @@
-<!DOCTYPE html>
-<html lang="hr">
+<!doctype html>
+<html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Generiraj SVG QR s logom</title>
-  <style>
-    body { font-family: system-ui, Arial; max-width:960px; margin:30px auto; padding:0 20px; }
-    .preview { display:flex; gap:20px; align-items:flex-start; }
-    .box { background:#fff; padding:16px; border-radius:10px; box-shadow:0 6px 18px rgba(0,0,0,.06); }
-    svg { display:block; max-width:100%; height:auto; }
-    button { background:#097f69; color:#fff; border:0; padding:10px 14px; border-radius:8px; cursor:pointer; }
-    input, select { padding:8px; width:100%; margin:6px 0 12px 0; box-sizing:border-box; }
-    label { font-weight:600; font-size:0.95rem; }
-  </style>
+<meta charset="utf-8" />
+<title>QR with logo (robust)</title>
+<style>
+  body { font-family: system-ui, Arial; padding: 20px; }
+  #preview { margin-top: 12px; }
+  svg { max-width: 100%; height: auto; display:block; }
+  canvas { display:block; max-width:100%; height:auto; }
+  button { margin-right:8px; }
+</style>
 </head>
 <body>
-  <h1>Generiraj SVG QR kod s logom u sredini</h1>
-  <p>Unesi URL i logo (URL ili lokalni path), stisni <em>Generiraj</em>. Logo će biti embedan u SVG (base64).</p>
+  <h3>Generate QR (SVG with embedded logo) — test</h3>
 
-  <div style="display:grid;grid-template-columns:1fr 260px;gap:20px;">
-    <div class="box">
-      <label>URL za QR</label>
-      <input id="inputUrl" type="url" value="https://etesng.github.io/interest" />
+  <label>Target URL</label>
+  <input id="url" value="https://etesng.github.io/interest" style="width:100%">
 
-      <label>Logo (URL ili lokalna putanja, npr. assets/logo.png)</label>
-      <input id="inputLogo" type="text" value="assets/Logo.png" />
+  <label>Logo path / URL (same origin recommended)</label>
+  <input id="logo" value="assets/Logo.png" style="width:100%">
 
-      <label>Veličina QR (px)</label>
-      <input id="inputSize" type="number" value="400" min="128" max="2000" />
+  <label>QR size (px)</label>
+  <input id="size" type="number" value="600">
 
-      <label>Omjer loga (npr. 0.20 = 20% širine QR)</label>
-      <input id="inputLogoRatio" type="number" step="0.05" value="0.20" min="0.08" max="0.35" />
+  <label>Logo ratio (0.15 = 15%)</label>
+  <input id="ratio" type="number" step="0.01" value="0.15">
 
-      <label>Tip ispravke greške</label>
-      <select id="inputECL">
-        <option value="H" selected>H (najveća, dopušta veći logo)</option>
-        <option value="Q">Q</option>
-        <option value="M">M</option>
-        <option value="L">L</option>
-      </select>
-
-      <div style="margin-top:12px; display:flex; gap:8px;">
-        <button id="btnGenerate">Generiraj</button>
-        <button id="btnDownload" disabled>Preuzmi SVG</button>
-      </div>
-
-      <p style="margin-top:12px;font-size:0.95rem;color:#444;">
-        Napomena: logo ne bi trebao prekrivati više od ~25% površine QR-a. Ako je logo prevelik, skeneri mogu imati problema.
-      </p>
-    </div>
-
-    <div>
-      <div class="box" id="previewBox">
-        <strong>Preview</strong>
-        <div id="svgContainer" style="margin-top:12px; display:flex; align-items:center; justify-content:center;">
-          <!-- SVG će se umetnuti ovdje -->
-        </div>
-      </div>
-    </div>
+  <div style="margin-top:10px">
+    <button id="gen">Generate SVG</button>
+    <button id="pngbtn">Generate PNG (fallback)</button>
+    <button id="download" disabled>Download SVG</button>
   </div>
 
-  <!-- QR library -->
-  <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+  <div id="preview"></div>
 
+  <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
   <script>
-  async function fetchImageAsDataURL(url) {
-    // Pokusaj fetch i konverziju u base64 data URL
+  // Helper: fetch image and convert to data URL
+  async function imageToDataURL(url) {
     try {
-      const res = await fetch(url, {cache: "no-store"});
-      if (!res.ok) throw new Error('Fetch nije uspio: ' + res.status);
+      const res = await fetch(url, { cache: "no-store" });
+      if (!res.ok) throw new Error('fetch failed ' + res.status);
       const blob = await res.blob();
       return await new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -77,113 +49,184 @@
         reader.readAsDataURL(blob);
       });
     } catch (err) {
-      console.warn("Nije moguće fetchati logo kao base64:", err);
-      // fallback: vrati original URL (može raditi ali ovisi o CORS-u i čitaču)
+      console.warn("imageToDataURL failed:", err);
+      // fallback: return original url (may be blocked by CORS)
       return url;
     }
   }
 
-  document.getElementById('btnGenerate').addEventListener('click', async () => {
-    const url = document.getElementById('inputUrl').value.trim();
-    const logoUrl = document.getElementById('inputLogo').value.trim();
-    const size = parseInt(document.getElementById('inputSize').value, 10) || 400;
-    const logoRatio = parseFloat(document.getElementById('inputLogoRatio').value) || 0.2;
-    const ecl = document.getElementById('inputECL').value || 'H';
+  document.getElementById('gen').addEventListener('click', async () => {
+    const url = document.getElementById('url').value.trim();
+    const logoPath = document.getElementById('logo').value.trim();
+    const size = parseInt(document.getElementById('size').value, 10) || 400;
+    const ratio = parseFloat(document.getElementById('ratio').value) || 0.15;
+    const ecl = 'H'; // highest error correction
 
-    if (!url) return alert('Unesi URL.');
+    if (!url) return alert('Enter URL');
 
-    // 1) Generiraj SVG QR (biblioteka vraća string SVG)
+    // generate SVG string for QR (high ECL)
     const svgString = await new Promise((resolve, reject) => {
       QRCode.toString(url, { type: 'svg', width: size, errorCorrectionLevel: ecl }, (err, svg) => {
-        if (err) reject(err);
-        else resolve(svg);
+        if (err) reject(err); else resolve(svg);
       });
     });
 
-    // 2) Ako imamo logo, fetchaj ga i pretvori u dataURL (bolje za embed)
+    // try convert logo to base64/dataURL (best)
     let logoData = null;
-    if (logoUrl) {
-      logoData = await fetchImageAsDataURL(logoUrl);
+    if (logoPath) {
+      logoData = await imageToDataURL(logoPath);
     }
 
-    // 3) Umetni <image> u SVG string točno prije zatvaranja <svg> taga (na dnu, ali iznad </svg>)
-    // Parsiraj width/height/viewBox ako postoji
-    // Pretpostavljamo da SVG ima viewBox npr. "0 0 256 256" ili će širina biti size
+    // parse SVG and insert logo
     const parser = new DOMParser();
     const doc = parser.parseFromString(svgString, "image/svg+xml");
     const svgEl = doc.querySelector('svg');
 
-    // Ako SVG nema viewBox, postavi ga tako da koristimo pixel dimenziju
+    // ensure viewBox exists
     let vb = svgEl.getAttribute('viewBox');
     let vbW = size, vbH = size;
     if (vb) {
-      const parts = vb.split(/\s+/).map(Number);
-      if (parts.length === 4) {
-        vbW = parts[2];
-        vbH = parts[3];
-      }
+      const p = vb.split(/\s+/).map(Number);
+      if (p.length === 4) { vbW = p[2]; vbH = p[3]; }
     } else {
       svgEl.setAttribute('viewBox', `0 0 ${size} ${size}`);
       vbW = size; vbH = size;
     }
 
-    // Odredi dimenzije loga (otprilike logoRatio * širina)
-    const logoSize = Math.round(vbW * logoRatio);
-    const logoX = Math.round((vbW - logoSize) / 2);
-    const logoY = Math.round((vbH - logoSize) / 2);
+    // compute logo size & center
+    const logoSize = Math.round(vbW * ratio);
+    const cx = Math.round(vbW / 2);
+    const cy = Math.round(vbH / 2);
+    const r = Math.round(logoSize / 2);
+    const padding = Math.round(logoSize * 0.12); // white padding around logo
 
     if (logoData) {
-      // kreiraj image element i ubaci
-      const imageEl = doc.createElementNS("http://www.w3.org/2000/svg", "image");
-      imageEl.setAttributeNS(null, 'x', logoX);
-      imageEl.setAttributeNS(null, 'y', logoY);
-      imageEl.setAttributeNS(null, 'width', logoSize);
-      imageEl.setAttributeNS(null, 'height', logoSize);
-      imageEl.setAttributeNS(null, 'preserveAspectRatio', 'xMidYMid meet');
+      // create white rounded rectangle / circle behind logo for contrast
+      // use rounded rect with rx to match logo shape; circle works too
+      const rect = doc.createElementNS("http://www.w3.org/2000/svg","rect");
+      rect.setAttribute('x', cx - r - padding);
+      rect.setAttribute('y', cy - r - padding);
+      rect.setAttribute('width', (r*2) + padding*2);
+      rect.setAttribute('height', (r*2) + padding*2);
+      rect.setAttribute('rx', Math.round((r*2 + padding*2) * 0.12));
+      rect.setAttribute('fill', '#fff');
+      rect.setAttribute('stroke', 'none');
+      rect.setAttribute('opacity', '1');
 
-      // ako je logoData base64/dataURL, koristimo ga, inače koristimo original URL (CORS može blokirati)
-      imageEl.setAttributeNS('http://www.w3.org/1999/xlink', 'href', logoData);
-      // neki preglednici traže href bez namespace
-      imageEl.setAttribute('href', logoData);
+      // create image tag
+      const img = doc.createElementNS("http://www.w3.org/2000/svg","image");
+      img.setAttribute('x', cx - r);
+      img.setAttribute('y', cy - r);
+      img.setAttribute('width', r*2);
+      img.setAttribute('height', r*2);
+      img.setAttribute('preserveAspectRatio', 'xMidYMid meet');
 
-      // opcionalno: stavimo bijeli krug ispod loga radi kontrasta
-      const circle = doc.createElementNS("http://www.w3.org/2000/svg", "rect");
-      // opcionalno: zaokruženi okvir (možeš koristiti <circle> ili <rect rx>)
-      circle.setAttribute('x', logoX - 6);
-      circle.setAttribute('y', logoY - 6);
-      circle.setAttribute('width', logoSize + 12);
-      circle.setAttribute('height', logoSize + 12);
-      circle.setAttribute('rx', Math.round(logoSize * 0.15)); // zaobljeni kutovi
-      circle.setAttribute('fill', '#ffffff'); // bijela pozadina za bolji kontrast
-      circle.setAttribute('opacity', '1');
+      // use href (xlink namespace sometimes needed for older browsers)
+      img.setAttributeNS('http://www.w3.org/1999/xlink', 'href', logoData);
+      img.setAttribute('href', logoData);
 
-      // ubaci prvo bijeli okvir pa logo (posebno radi čitača)
-      svgEl.appendChild(circle);
-      svgEl.appendChild(imageEl);
+      // Append the white background first then logo so logo appears on top
+      svgEl.appendChild(rect);
+      svgEl.appendChild(img);
+    } else {
+      console.warn('Logo not available; SVG will be without logo.');
     }
 
-    // 4) Serializiraj natrag u string i prikaži
-    const serializer = new XMLSerializer();
-    const finalSVG = serializer.serializeToString(svgEl);
+    // serialize SVG
+    const finalSVG = new XMLSerializer().serializeToString(svgEl);
 
-    // Postavi u DOM
-    const container = document.getElementById('svgContainer');
-    container.innerHTML = finalSVG;
+    // show preview
+    const preview = document.getElementById('preview');
+    preview.innerHTML = '';
+    const wrapper = document.createElement('div');
+    wrapper.innerHTML = finalSVG;
+    preview.appendChild(wrapper);
 
-    // Omogući preuzimanje: kreiraj blob i link
-    const svgBlob = new Blob([finalSVG], {type: 'image/svg+xml;charset=utf-8'});
-    const urlBlob = URL.createObjectURL(svgBlob);
-    const downloadBtn = document.getElementById('btnDownload');
-    downloadBtn.disabled = false;
-    downloadBtn.onclick = () => {
+    // enable download
+    const blob = new Blob([finalSVG], { type: 'image/svg+xml;charset=utf-8' });
+    const blobUrl = URL.createObjectURL(blob);
+    const dl = document.getElementById('download');
+    dl.disabled = false;
+    dl.onclick = () => {
       const a = document.createElement('a');
-      a.href = urlBlob;
+      a.href = blobUrl;
       a.download = 'qr-with-logo.svg';
       document.body.appendChild(a);
       a.click();
       a.remove();
     };
+
+    // Quick tester suggestion: also generate PNG fallback (uncomment if you want)
   });
+
+  // PNG fallback using canvas: draw QR on canvas then draw logo on top
+  document.getElementById('pngbtn').addEventListener('click', async () => {
+    const url = document.getElementById('url').value.trim();
+    const logoPath = document.getElementById('logo').value.trim();
+    const size = parseInt(document.getElementById('size').value, 10) || 600;
+    const ratio = parseFloat(document.getElementById('ratio').value) || 0.15;
+
+    const canvas = document.createElement('canvas');
+    canvas.width = size; canvas.height = size;
+    document.getElementById('preview').innerHTML = '';
+    document.getElementById('preview').appendChild(canvas);
+    try {
+      // draw QR on canvas
+      await new Promise((resolve, reject) => {
+        QRCode.toCanvas(canvas, url, { width: size, errorCorrectionLevel: 'H' }, (err) => {
+          if (err) reject(err); else resolve();
+        });
+      });
+
+      // draw logo on center (if available)
+      try {
+        const dataUrl = await imageToDataURL(logoPath);
+        const img = new Image();
+        img.onload = () => {
+          const ctx = canvas.getContext('2d');
+          const logoW = Math.round(size * ratio);
+          const logoH = logoW * (img.height / img.width);
+          const x = (size - logoW) / 2;
+          const y = (size - logoH) / 2;
+
+          // white rounded rect behind logo
+          const pad = Math.round(logoW * 0.12);
+          ctx.fillStyle = '#ffffff';
+          roundRect(ctx, x - pad, y - pad, logoW + pad*2, logoH + pad*2, Math.round(logoW*0.08), true, false);
+
+          // draw logo
+          ctx.drawImage(img, x, y, logoW, logoH);
+
+          // make PNG download link
+          const pngData = canvas.toDataURL('image/png');
+          const a = document.createElement('a');
+          a.href = pngData; a.download = 'qr-with-logo.png';
+          a.textContent = 'Download PNG';
+          document.getElementById('preview').appendChild(a);
+        };
+        img.onerror = (e) => console.warn('logo image load failed', e);
+        img.src = dataUrl;
+      } catch (e) {
+        console.warn('logo fetching or drawing failed', e);
+      }
+    } catch (err) {
+      alert('QR canvas generation failed: ' + err);
+    }
+  });
+
+  // small helper: draw rounded rect on canvas
+  function roundRect(ctx, x, y, w, h, r, fill, stroke) {
+    if (typeof r === 'undefined') r = 5;
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.arcTo(x + w, y,   x + w, y + h, r);
+    ctx.arcTo(x + w, y + h, x,   y + h, r);
+    ctx.arcTo(x,   y + h, x,   y,   r);
+    ctx.arcTo(x,   y,   x + w, y,   r);
+    ctx.closePath();
+    if (fill) ctx.fill();
+    if (stroke) ctx.stroke();
+  }
   </script>
 </body>
 </html>
