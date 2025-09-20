@@ -3,28 +3,138 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Iskaz interesa</title>
+  <title>Iskaz interesa - Radionice</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      margin: 0; padding: 0;
+      background: #f0f4f8;
+      color: #333;
+    }
+    header {
+      background: linear-gradient(135deg, #097f69, #05caa7);
+      color: white;
+      padding: 30px 20px;
+      text-align: center;
+    }
+    header h1 { margin: 0; font-size: 2em; }
+    header p { margin-top: 8px; font-size: 1.1em; }
+
+    main {
+      max-width: 900px;
+      margin: 30px auto;
+      padding: 20px;
+    }
+
+    .workshops {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+      transition: transform 0.2s;
+      cursor: pointer;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+    }
+    .card h3 { margin-top: 0; }
+    .icon {
+      font-size: 2em;
+      margin-bottom: 10px;
+    }
+
+    form {
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    form h2 { margin-top: 0; }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    input, select, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1em;
+    }
+    button {
+      background: #097f69;
+      color: white;
+      font-weight: bold;
+      margin-top: 20px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background: #05caa7;
+    }
+    #message {
+      margin-top: 15px;
+      font-weight: bold;
+      text-align: center;
+    }
+  </style>
 </head>
 <body>
-  <h1>Iskaži interes za radionicu</h1>
+  <header>
+    <h1>🌟 Iskaži interes za radionicu</h1>
+    <p>Odaberi radionicu koja ti je najzanimljivija i prijavi se!</p>
+  </header>
 
-  <form id="interestForm">
-    <label for="email">Tvoj e-mail:</label><br>
-    <input type="email" id="email" required><br><br>
+  <main>
+    <div class="workshops">
+      <div class="card" onclick="selectWorkshop('elektronika')">
+        <div class="icon">💡</div>
+        <h3>Svjetla na dodir</h3>
+        <p>Eksperimenti s mikroupravljačima i LED signalizacijom.</p>
+      </div>
+      <div class="card" onclick="selectWorkshop('robotika')">
+        <div class="icon">🤖</div>
+        <h3>Ruka koja sluša</h3>
+        <p>Programiraj i upravljaj robotskom rukom.</p>
+      </div>
+      <div class="card" onclick="selectWorkshop('ekonomija')">
+        <div class="icon">📈</div>
+        <h3>Poduzetnički izazov</h3>
+        <p>Osmisli svoj startup i predstavi ga timu.</p>
+      </div>
+      <div class="card" onclick="selectWorkshop('ai')">
+        <div class="icon">🧠</div>
+        <h3>Moć umjetne inteligencije</h3>
+        <p>Treniraj AI i kreiraj marketinšku kampanju.</p>
+      </div>
+    </div>
 
-    <label for="workshop">Odaberi radionicu:</label><br>
-    <select id="workshop" required>
-      <option value="">-- Odaberi --</option>
-      <option value="elektronika">Svjetla na dodir</option>
-      <option value="ekonomija">Put do financijske pismenosti</option>
-      <option value="ai">Moć umjetne inteligencije</option>
-      <option value="robotika">Ruka koja sluša tvoje naredbe</option>
-    </select><br><br>
+    <form id="interestForm">
+      <h2>✍️ Prijavi se</h2>
+      <label for="workshop">Odabrana radionica</label>
+      <select id="workshop" required>
+        <option value="">-- Odaberi radionicu --</option>
+        <option value="elektronika">Svjetla na dodir</option>
+        <option value="robotika">Ruka koja sluša</option>
+        <option value="ekonomija">Poduzetnički izazov</option>
+        <option value="ai">Moć umjetne inteligencije</option>
+      </select>
 
-    <button type="submit">Pošalji</button>
-  </form>
+      <label for="email">Tvoj e-mail</label>
+      <input type="email" id="email" placeholder="ime@skola.hr" required>
 
-  <p id="message"></p>
+      <button type="submit">📩 Pošalji prijavu</button>
+      <p id="message"></p>
+    </form>
+  </main>
 
   <!-- Firebase SDK -->
   <script type="module">
